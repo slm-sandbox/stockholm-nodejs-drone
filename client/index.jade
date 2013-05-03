@@ -1,0 +1,31 @@
+doctype 5
+html(lang="en")
+  head
+    title= "AR Drone"
+    script(src="/socket.io/socket.io.js")
+    script(src="/assets/keyboard.js")
+
+  body
+    table(id = "commands")
+
+    script(type='text/javascript')
+      var socket = io.connect('http://localhost:3000');
+      var table = document.getElementById('commands');
+      function on (combo, cmd) {
+        KeyboardJS.on(combo, function() { socket.emit("cmd", { "cmd": cmd }); });
+        var row = table.insertRow();
+        row.insertCell(0).innerHTML = combo;
+        row.insertCell(1).innerHTML = cmd;
+      }
+      on('a', 'takeoff');
+      on('z', 'land');
+      on('s', 'up');
+      on('x', 'down');
+      on('q', 'clockwise');
+      on('w', 'counter-clockwise');
+      on('up', 'front');
+      on('down', 'back');
+      on('right', 'right');
+      on('left', 'left');
+      on('ctrl + left', 'flip-left');
+      on('space', 'stop');

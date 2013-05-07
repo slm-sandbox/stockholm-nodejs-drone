@@ -1,5 +1,8 @@
-var arDrone = require('ar-drone');
-var client  = arDrone.createClient();
+var client = null;
+
+exports.init = function (_client) {
+  client = _client;
+}
 
 exports.takeoff = function () {
     client.takeoff();
@@ -23,11 +26,11 @@ exports.down = function () {
 };
 
 exports.clockwise = function () {
-  client.clockwise(0.1);
+  client.clockwise(1);
 };
 
 exports.counterClockwise = function () {
-  client.counterClockwise(0.1);
+  client.counterClockwise(1);
 };
 
 exports.front = function () {

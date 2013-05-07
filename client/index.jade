@@ -6,16 +6,36 @@ html(lang="en")
     script(src="/assets/keyboard.js")
 
   body
+    h3 Commands
     table(id = "commands")
+
+    h3 Navdata
+    div(id = "navdata")
 
     script(type='text/javascript')
       var socket = io.connect('http://localhost:3000');
+
+      var navdata = document.getElementById("navdata");
+      socket.on("navdata", function(data) {
+        function navdataObject2String (object) {
+          var v;
+          s = "";
+          for (k in object) {
+            v = object[k];
+            s = s + k + ": " + v + "<br/>";
+          }
+          return s;
+        }
+        navdata.innerHTML = navdataObject2String(data.droneState) + navdataObject2String(data.demo);
+      });
+
       var table = document.getElementById('commands');
       function on (combo, cmd) {
         KeyboardJS.on(combo, function() { socket.emit("cmd", { "cmd": cmd }); });
-        var row = table.insertRow();
+        var row = document.createElement("TR");
         row.insertCell(0).innerHTML = combo;
         row.insertCell(1).innerHTML = cmd;
+        table.appendChild(row);
       }
       on('a', 'takeoff');
       on('z', 'land');
@@ -27,5 +47,6 @@ html(lang="en")
       on('down', 'back');
       on('right', 'right');
       on('left', 'left');
-      on('ctrl + left', 'flipLeft');
+      on('l', 'flip-left');
       on('space', 'stop');
+

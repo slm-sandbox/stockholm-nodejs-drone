@@ -52,3 +52,7 @@ exports.left = function () {
 exports.flipLeft = function () {
   client.animate('flipLeft', 1500);
 };
+
+exports.flipRight = function () {
+  client.animate('flipRight', 1500);
+};

@@ -56,3 +56,11 @@ exports.flipLeft = function () {
 exports.flipRight = function () {
   client.animate('flipRight', 1500);
 };
+
+exports.vzDance = function () {
+  client.animate('vzDance', 1500);
+};
+
+exports.disableEmergency = function () {
+  client.disableEmergency();
+};

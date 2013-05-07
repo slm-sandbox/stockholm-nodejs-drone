@@ -9,6 +9,8 @@ var httpServer = http.createServer(app);
 httpServer.listen(3000);
 var io = socketio.listen(httpServer);
 
+io.set('log level', 2);
+
 var client = arDrone.createClient();
 controller.init(client);
 

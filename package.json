@@ -10,6 +10,7 @@
   "author": "pederbl@lanemarknad.se",
   "license": "BSD",
   "dependencies": {
+    "coffee-script": "1.x",
     "ar-drone": "git://github.com/felixge/node-ar-drone.git",
     "express": ">=3.1",
     "socket.io": "0.9.x",

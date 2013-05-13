@@ -47,6 +47,8 @@ html(lang="en", ng-app)
           navdata.innerHTML = navdataObject2String(data.droneState) + navdataObject2String(data.demo);
         });
 
+
+
         var table = document.getElementById('commands');
         function on (combo, cmd) {
           KeyboardJS.on(combo, function() { socket.emit("cmd", { "cmd": cmd }); });
@@ -55,19 +57,19 @@ html(lang="en", ng-app)
           row.insertCell(1).innerHTML = cmd;
           table.appendChild(row);
         }
-        on('a', 'takeoff');
-        on('z', 'land');
-        on('s', 'up');
-        on('x', 'down');
-        on('q', 'clockwise');
-        on('w', 'counterClockwise');
-        on('up', 'front');
-        on('down', 'back');
-        on('right', 'right');
-        on('left', 'left');
+        on('e', 'takeoff');
+        on('space', 'land');
+        on('up', 'up');
+        on('down', 'down');
+        on('right', 'clockwise');
+        on('left', 'counterClockwise');
+        on('w', 'front');
+        on('s', 'back');
+        on('d', 'right');
+        on('a', 'left');
         on('k', 'flipLeft');
         on('l', 'flipRight');
         on('o', 'vzDance');
-        on('space', 'stop');
+        on('q', 'stop');
 
       }

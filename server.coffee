@@ -21,16 +21,6 @@ app.configure ->
 app.get "/", (req, res) ->
   res.render "index"
 
-findLargestFace = (buffer,cb)->
-  cv.readImage buffer, (err, im) ->
-    im.detectObject cv.FACE_CASCADE, {}, (err, faces) ->
-      i = 0
-
-      faces.sort (a,b)->
-        a.width*a.height-b.width*b.height
-      cb faces[0]
-
-
 io.sockets.on "connection", (socket) ->
   socket.on "cmd", (data) ->
     action = controller[data.cmd]
@@ -60,16 +50,18 @@ seekFace = (face, im,cb)->
   heightDiff = 1 - faceCenter.y/imCenter.y
 
 
-  if Math.abs(heightDiff)>10
-    if heightDiff<0
-      client.down 0.2
-    else
-      client.up 0.2
+  # if Math.abs(heightDiff)>0.1
+  if heightDiff<0
+    console.log 'Goes down', heightDiff
+    client.down 1
+  else
+    console.log 'Goes up', heightDiff
+    client.up 1
 
-  do cb
   setTimeout ->
     client.up 0
     client.clockwise 0
+    do cb
   , 100
 
 

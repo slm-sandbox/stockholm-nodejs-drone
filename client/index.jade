@@ -3,8 +3,9 @@ html(lang="en", ng-app)
   head
     title= "AR Drone"
     script(src="/socket.io/socket.io.js")
-    script(src="/assets/keyboard.js")
+    script(src="/assets/mousetrap.min.js")
     script(src="/assets/angular.1.0.6.min.js")
+    != js('main')
 
   body(ng-controller="Ctrl")
 
@@ -15,65 +16,12 @@ html(lang="en", ng-app)
       div(ng-show='navdata.droneState.tooMuchWind') Too windy to fly right now
       div(ng-show='navdata.droneState.emergencyLanding', ng-click='disableEmergency()') Drone deactivated due to emergency landing. Click here to reactivate.
 
+    img(ng-src = "{{camImg}}")
+
     h3 Commands
     table(id = "commands")
 
     h3 Navdata
     div(id = "navdata")
 
-    script(type='text/javascript')
-      var socket = io.connect('http://localhost:3000');
 
-      window.Ctrl = function ($scope) {
-        window.$scope = $scope;
-
-        $scope.disableEmergency = function () {
-          socket.emit('cmd', { cmd: 'disableEmergency' });
-        };
-
-        var navdata = document.getElementById("navdata");
-        socket.on("navdata", function(data) {
-          $scope.navdata = data;
-          $scope.$digest();
-          function navdataObject2String (object) {
-            var v;
-            s = "";
-            for (k in object) {
-              v = object[k];
-              s = s + k + ": " + v + "<br/>";
-            }
-            return s;
-          }
-          navdata.innerHTML = navdataObject2String(data.droneState) + navdataObject2String(data.demo);
-        });
-
-
-
-        var table = document.getElementById('commands');
-        function on (combo, cmd) {
-          KeyboardJS.on(combo, function() { socket.emit("cmd", { "cmd": cmd }); });
-          var row = document.createElement("TR");
-          row.insertCell(0).innerHTML = combo;
-          row.insertCell(1).innerHTML = cmd;
-          table.appendChild(row);
-        }
-        on('e', 'takeoff');
-        on('space', 'land');
-        on('up', 'up');
-        on('down', 'down');
-        on('right', 'clockwise');
-        on('left', 'counterClockwise');
-        on('w', 'front');
-        on('s', 'back');
-        on('d', 'right');
-        on('a', 'left');
-        on('k', 'flipLeft');
-        on('l', 'flipRight');
-        on('o', 'vzDance');
-        on('q', 'stop');
-        on('f', 'faceDetection');
-        on('g', 'stopFaceDetection');
-        on('r', 'startFixHeight');
-        on('t', 'endFixHeight');
-
-      }

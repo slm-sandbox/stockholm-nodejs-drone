@@ -38,10 +38,10 @@ seekFace = (face, im,cb)->
     y: im.height()*0.5
   }
 
-
   turnDiff = 1 - faceCenter.x/imCenter.x
   heightDiff = 1 - faceCenter.y/imCenter.y
-  if Math.abs(turnDiff)>Math.abs(heightDiff)
+
+  seekHeight = (cb)->
     console.log 'turnDiff',turnDiff
     if turnDiff<-0.1
       console.log 'Goes clockwise for face', turnDiff
@@ -55,11 +55,13 @@ seekFace = (face, im,cb)->
       console.log 'client.counterClockwise 1'
     else
       client.stop().after 100, ->
-        do cb else
+        do cb
+
+  seekTurn = (cb)->
     console.log 'heightDiff',heightDiff
     if heightDiff<-0.1
       console.log 'Goes down for face', heightDiff
-      client.down( 0.1).after 100, ->
+      client.down(0.1).after 100, ->
         do cb
       console.log 'client.down 0.1'
     else if heightDiff>0.1
@@ -70,6 +72,11 @@ seekFace = (face, im,cb)->
     else
       client.stop().after 100, ->
         do cb
+
+  if Math.abs(turnDiff)>Math.abs(heightDiff)
+    seekTurn cb
+  else
+    seekHeight cb
 
 missingFaceDetections = 0
 reactingToFace = false

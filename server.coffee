@@ -50,7 +50,9 @@ io.sockets.on "connection", (socket) ->
     return if imageSendingPaused
     socket.emit "/drone/image","/image/#{Math.random()}"
     imageSendingPaused = true
-    setTimeout (-> imageSendingPaused = false), 100
+    setTimeout ->
+      imageSendingPaused = false
+    , 100
 
 app.get "/image/:id", (req,res)->
   imageMiddleware currentImg, (err, modifiedImg)->

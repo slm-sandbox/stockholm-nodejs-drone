@@ -1,12 +1,14 @@
-var http = require('http');
-var express = require('express');
-var socketio = require('socket.io');
-var controller = require('./controller');
-var arDrone = require('ar-drone');
+var http        = require('http');
+var express     = require('express');
+var socketio    = require('socket.io');
+var controller  = require('./controller');
+var arDrone     = require('ar-drone');
+var connectAssets = require('connect-assets')
+
 
 var app = express();
 var httpServer = http.createServer(app);
-httpServer.listen(3000);
+
 var io = socketio.listen(httpServer);
 
 io.set('log level', 2);
@@ -15,16 +17,23 @@ var client = arDrone.createClient();
 controller.init(client);
 
 app.configure(function () {
-  app.set('views', __dirname + '/client');
+  app.set('views', __dirname + '/client/interface');
   app.set('view engine', 'jade');
-  app.use('/assets', express.static(__dirname + '/client/assets'));
+  app.use( connectAssets({src: "client"}))
 });
 
-app.get('/', function(req, res) {
+app.get("/interface/:name", function(req, res) {
+  var name = req.params.name;
+  res.render(name + '/' + name);
+});
+
+// Default route
+app.use(function(req, res) {
   res.render('index');
 });
 
 io.sockets.on('connection', function (socket) {
+
   socket.on('cmd', function (data) {
     var action = controller[data.cmd];
     if (action) {
@@ -36,4 +45,11 @@ io.sockets.on('connection', function (socket) {
   });
 
   client.on('navdata', function (data) { socket.emit('navdata', data); });
+});
+
+httpServer.listen(3000, function () {
+  console.log ("......................................")
+  console.log ("Environment set to: " + process.env.NODE_ENV)
+  console.log ("Listen to port: " + 3000)
+  console.log ("......................................")
 });

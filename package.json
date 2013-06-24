@@ -1,6 +1,6 @@
 {
   "name": "ar",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "AR Droner",
   "main": "index.js",
   "scripts": {
@@ -11,10 +11,10 @@
   "license": "BSD",
   "dependencies": {
     "ar-drone": "git://github.com/felixge/node-ar-drone.git",
-    "express": ">=3.1",
-    "socket.io": "0.9.x",
-    "jade": "0.x",
-    "opencv":"*"
+    "express": "*",
+    "socket.io": "*",
+    "jade": "*",
+    "connect-assets": "*"
   },
   "readmeFilename": "README.md",
   "devDependencies": {}

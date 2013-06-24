@@ -1,0 +1,9 @@
+doctype 5
+html(lang="en", ng-app="drone")
+  head
+    title= "AR Drone"
+    script(src="/socket.io/socket.io.js")
+    != js('scripts')
+
+  body
+    ng-view

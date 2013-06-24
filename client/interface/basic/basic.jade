@@ -1,0 +1,13 @@
+
+progress(value='{{navdata.demo.batteryPercentage}}', max=100)
+
+div#error
+  div(ng-show='navdata.droneState.lowBattery') Too low on battery, recharge!
+  div(ng-show='navdata.droneState.tooMuchWind') Too windy to fly right now
+  div(ng-show='navdata.droneState.emergencyLanding', ng-click='disableEmergency()') Drone deactivated due to emergency landing. Click here to reactivate.
+
+h3 Commands
+table(id = "commands")
+
+h3 Navdata
+div(id = "navdata")

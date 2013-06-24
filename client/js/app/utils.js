@@ -1,5 +1,5 @@
 
-angular.module('utils', []).provider('socket', function() {
+angular.module('utils.socket', []).provider('socket', function() {
   var self;
   self = this;
   self.url = location.origin;
@@ -70,3 +70,47 @@ angular.module('utils', []).provider('socket', function() {
   ];
   return this;
 });
+
+
+angular.module('utils.keyCommands', ["utils.socket"]).service('keyCommands', function(socket) {
+
+  var commands = {};
+  commands.e = "takeoff";
+  commands.space = "land";
+  commands.up = "up";
+  commands.down = "down";
+  commands.right = "clockwise";
+  commands.left = "counterClockwise";
+  commands.w = "front";
+  commands.s = "back";
+  commands.d = "right";
+  commands.a = "left";
+  commands.k = "flipLeft";
+  commands.l = "flipRight";
+  commands.o = "vzDance";
+  commands.q = "stop";
+
+  this.get = function () {
+    return commands;
+  };
+
+  this.bind = function (keyboardKey, command) {
+    KeyboardJS.clear(keyboardKey);
+    KeyboardJS.on(keyboardKey, function() { socket.emit("cmd", { "cmd": command }); });
+  };
+
+  this.reset = function() {
+    for(var key in commands) {
+      this.bind(key, commands[key])
+    }
+  };
+
+  this.reset()
+
+  return this;
+
+});
+
+
+
+angular.module('utils', ["utils.socket", "utils.keyCommands"])

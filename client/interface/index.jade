@@ -4,6 +4,13 @@ html(lang="en", ng-app="drone")
     title= "AR Drone"
     script(src="/socket.io/socket.io.js")
     != js('scripts')
+    != css('main')
 
   body
+    div.navbar
+      div.navbar-inner
+        ul.nav
+          li
+            a(href = "#basic") Basic
+
     ng-view

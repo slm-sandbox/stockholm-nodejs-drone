@@ -8,7 +8,6 @@ function BasicController($scope, socket, keyCommands) {
   };
 
   socket.on("navdata", function(data) {
-    console.log ("data")
     $scope.navdata = data;
   });
 

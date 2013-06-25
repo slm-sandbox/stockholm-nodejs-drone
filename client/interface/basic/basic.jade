@@ -6,14 +6,6 @@ div.container-fluid
     div.span9.span-fixed-sidebar
 
 
-      h3 Battery
-      progress(value='{{navdata.demo.batteryPercentage}}', max=100)
-
-      h3 Status
-      div#error
-        div(ng-show='navdata.droneState.lowBattery') Too low on battery, recharge!
-        div(ng-show='navdata.droneState.tooMuchWind') Too windy to fly right now
-        div(ng-show='navdata.droneState.emergencyLanding', ng-click='disableEmergency()') Drone deactivated due to emergency landing. Click here to reactivate.
 
       h3 Navdata
       pre
@@ -22,6 +14,15 @@ div.container-fluid
     div.span3
       div.well.sidebar-nav-fixed
         ul.nav.nav-list
+
+          h3 Status
+          progress(value='{{navdata.demo.batteryPercentage}}', max=100)
+
+          div#error
+            div(ng-show='navdata.droneState.lowBattery') Too low on battery, recharge!
+            div(ng-show='navdata.droneState.tooMuchWind') Too windy to fly right now
+            div(ng-show='navdata.droneState.emergencyLanding', ng-click='disableEmergency()') Drone deactivated due to emergency landing. Click here to reactivate.
+
           h3 Commands
           ul
             li(ng-repeat="(key,command) in commands") {{command.down}} : {{key}}

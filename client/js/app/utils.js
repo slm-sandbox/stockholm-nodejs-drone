@@ -74,34 +74,38 @@ angular.module('utils.socket', []).provider('socket', function() {
 
 angular.module('utils.keyCommands', ["utils.socket"]).service('keyCommands', function(socket) {
 
-  var commands = {};
-  commands.e = "takeoff";
-  commands.space = "land";
-  commands.up = "up";
-  commands.down = "down";
-  commands.right = "clockwise";
-  commands.left = "counterClockwise";
-  commands.w = "front";
-  commands.s = "back";
-  commands.d = "right";
-  commands.a = "left";
-  commands.k = "flipLeft";
-  commands.l = "flipRight";
-  commands.o = "vzDance";
-  commands.q = "stop";
+  var commands = {
+    "e" : {"down" : "takeoff"},
+    "space" : {"down" : "land"},
+    "up" : {"down" : "up", "up" : "upStop"},
+    "down" : {"down" : "down", "up" : "downStop"},
+    "right" : {"down" : "clockwise", "up" : "clockwiseStop"},
+    "left" : {"down" : "counterClockwise", "up" : "counterClockwiseStop"},
+    "w" : {"down" : "front", "up" : "frontStop"},
+    "s" : {"down" : "back", "up" : "backStop"},
+    "d" : {"down" : "right", "up" : "rightStop"},
+    "a" : {"down" : "left", "up" : "leftStop"},
+    "k" : {"down" : "flipLeft"},
+    "l" : {"down" : "flipRight"},
+    "o" : {"down" : "vzDance"},
+    "q" : {"down" : "stop"}
+  };
+
 
   this.get = function () {
     return commands;
   };
 
-  this.bind = function (keyboardKey, command) {
-    KeyboardJS.clear(keyboardKey);
-    KeyboardJS.on(keyboardKey, function() { socket.emit("cmd", { "cmd": command }); });
+  this.bind = function (keyboardKey, cmdOnDown, cmdOnUp) {
+    Mousetrap.bind(keyboardKey, function() { socket.emit("cmd", { "cmd": cmdOnDown }); }, 'keydown');
+    if (cmdOnUp) {
+      Mousetrap.bind(keyboardKey, function() { socket.emit("cmd", { "cmd": cmdOnUp }); }, 'keyup');
+    }
   };
 
   this.reset = function() {
     for(var key in commands) {
-      this.bind(key, commands[key])
+      this.bind(key, commands[key].down, commands[key].up)
     }
   };
 
@@ -114,3 +118,5 @@ angular.module('utils.keyCommands', ["utils.socket"]).service('keyCommands', fun
 
 
 angular.module('utils', ["utils.socket", "utils.keyCommands"])
+
+

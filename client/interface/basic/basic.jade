@@ -1,4 +1,6 @@
 
+
+
 progress(value='{{navdata.demo.batteryPercentage}}', max=100)
 
 div#error
@@ -6,10 +8,15 @@ div#error
   div(ng-show='navdata.droneState.tooMuchWind') Too windy to fly right now
   div(ng-show='navdata.droneState.emergencyLanding', ng-click='disableEmergency()') Drone deactivated due to emergency landing. Click here to reactivate.
 
-h3 Commands
-ul
-  li(ng-repeat="(key,command) in commands") {{command}} : {{key}}
 
-h3 Navdata
-pre
-  {{navdata | json}}
+div.row-fluid
+  div.span4
+    h3 Commands
+    ul
+      li(ng-repeat="(key,command) in commands") {{command.down}} : {{key}}
+  div.span8
+    h3 Navdata
+    pre
+      {{navdata | json}}
+
+

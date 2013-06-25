@@ -5,12 +5,10 @@ var controller  = require('./controller');
 var arDrone     = require('ar-drone');
 var connectAssets = require('connect-assets')
 
-
 var app = express();
 var httpServer = http.createServer(app);
 
 var io = socketio.listen(httpServer);
-
 io.set('log level', 2);
 
 var client = arDrone.createClient();
@@ -27,7 +25,6 @@ app.get("/interface/:name", function(req, res) {
   res.render(name + '/' + name);
 });
 
-// Default route
 app.use(function(req, res) {
   res.render('index');
 });
@@ -45,6 +42,7 @@ io.sockets.on('connection', function (socket) {
   });
 
   client.on('navdata', function (data) { socket.emit('navdata', data); });
+
 });
 
 httpServer.listen(3000, function () {

@@ -13,8 +13,6 @@ io = socketio.listen httpServer
 io.set "log level", 2
 client = arDrone.createClient()
 
-# require('./imageServer')(client.getPngStream())
-
 currentImg = null
 
 controller.init client
@@ -27,6 +25,14 @@ app.configure ->
 
 app.get "/", (req, res) ->
   res.render "index"
+
+responses = []
+app.get "/stream", (req, res) ->
+  res.writeHead 200,
+    "Content-Type": "mp4"
+    # "Transfer-Encoding": "H."
+  responses.push res
+
 
 imageMiddleware = async.compose controller.imageMiddlewares.reverse()...
 
@@ -44,12 +50,15 @@ io.sockets.on "connection", (socket) ->
 
 
   imageSendingPaused = false
-  client.getPngStream().on 'data', (frame)->
+  client.getVideoStream().on 'data', (frame)->
+    for res in responses
+      res.write frame
 
+  client.getPngStream().on 'data', (frame)->
     currentImg = frame
     return if imageSendingPaused
-    socket.emit "/drone/image","/image/#{Math.random()}"
     imageSendingPaused = true
+    socket.emit "/drone/image","/image/#{Math.random()}"
     setTimeout ->
       imageSendingPaused = false
     , 100

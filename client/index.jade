@@ -16,6 +16,9 @@ html(lang="en", ng-app)
       div(ng-show='navdata.droneState.tooMuchWind') Too windy to fly right now
       div(ng-show='navdata.droneState.emergencyLanding', ng-click='disableEmergency()') Drone deactivated due to emergency landing. Click here to reactivate.
 
+    //- video()
+    //-   source(src = "/stream")
+
     img(ng-src = "{{camImg}}")
 
     h3 Commands

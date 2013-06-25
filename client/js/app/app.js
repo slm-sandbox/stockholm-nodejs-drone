@@ -6,6 +6,11 @@ this.app = angular.module('drone', ["utils"], function($routeProvider, $location
     controller: BasicController
   });
 
+  $routeProvider.when('/sandbox', {
+    templateUrl: 'interface/sandbox',
+    controller: SandboxController
+  });
+
   $routeProvider.otherwise({
     redirectTo: '/basic'
   });

@@ -1,4 +1,3 @@
-
 function BasicController($scope, socket, keyCommands) {
 
   $scope.commands = keyCommands.get();

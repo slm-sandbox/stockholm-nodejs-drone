@@ -1,11 +1,6 @@
-
-
-
 div.container-fluid
   div.row-fluid.row
     div.span9.span-fixed-sidebar
-
-
 
       h3 Navdata
       pre
@@ -25,5 +20,5 @@ div.container-fluid
 
           h3 Commands
           ul
-            li(ng-repeat="(key,command) in commands") {{command.down}} : {{key}}
+            li(ng-repeat="(key,command) in commands") {{key}} -> {{command.down}}
 

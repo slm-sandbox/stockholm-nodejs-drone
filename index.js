@@ -64,5 +64,5 @@ httpServer.listen(3000, function () {
 });
 
 videoServer.listen(5000, function() {
-	console.log ("img listening");
+	console.log ("Video port open");
 } );

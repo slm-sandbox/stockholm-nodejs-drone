@@ -11,6 +11,11 @@ this.app = angular.module('drone', ["utils"], function($routeProvider, $location
     controller: SandboxController
   });
 
+  $routeProvider.when('/video', {
+    templateUrl: 'interface/video',
+    controller: VideoController
+  });
+
   $routeProvider.otherwise({
     redirectTo: '/basic'
   });

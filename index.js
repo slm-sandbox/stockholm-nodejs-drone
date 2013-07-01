@@ -4,16 +4,18 @@ var socketio    = require('socket.io');
 var controller  = require('./controller');
 var arDrone     = require('ar-drone');
 var connectAssets = require('connect-assets');
-var droneStream = require("./dronestream/lib/server");
+var droneStream = require("dronestream");
 
 var app = express();
+
+var videoServer = http.createServer(function(req, res) {
+    return res;
+});
+droneStream.listen(videoServer);
+
 var httpServer = http.createServer(app);
 
-var imgServer = http.createServer(function(req, res) {
-	  return res;
-	});
 
-droneStream.listen(imgServer);
 
 var io = socketio.listen(httpServer);
 io.set('log level', 2);
@@ -48,8 +50,8 @@ io.sockets.on('connection', function (socket) {
     }
   });
 
-  client.on('navdata', function (data) { 
-	  socket.emit('navdata', data); 
+  client.on('navdata', function (data) {
+	  socket.emit('navdata', data);
   });
 
 });
@@ -61,6 +63,6 @@ httpServer.listen(3000, function () {
   console.log ("......................................")
 });
 
-imgServer.listen(5000, function() {
+videoServer.listen(5000, function() {
 	console.log ("img listening");
-} ); 
+} );
